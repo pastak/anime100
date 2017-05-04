@@ -3,7 +3,14 @@ const path = require('path')
 
 const isProductionBuild = process.env.NODE_ENV === 'production'
 
-const plugins = [new webpack.optimize.UglifyJsPlugin()]
+const plugins = [
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }
+  }),
+  new webpack.optimize.UglifyJsPlugin()
+]
 
 module.exports = Object.assign({
   devtool: isProductionBuild ? false : 'inline-source-map',
