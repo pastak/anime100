@@ -47,7 +47,7 @@ export default class extends React.Component {
   render () {
     const {data, yearNum, rankNum} = this
     return <circle
-      cy={(2017 - yearNum) * 12}
+      cy={(2017 - yearNum) * 12 + 40}
       cx={rankNum * 2.5 + 65}
       r='6'
       stroke={this.state.pinnedInfo ? '#6fffee' : 'black'}
