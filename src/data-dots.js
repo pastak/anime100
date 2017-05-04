@@ -61,7 +61,18 @@ export default class extends React.Component {
     }
     return <g>
       {
-        data.map((data) => {
+        data
+        .filter((data) => {
+          if (!this.props.filterRank) return true
+          const rankNum = Number(data.rank.substr(0, data.rank.length - 1))
+          return this.props.filterRank[0] <= rankNum && rankNum <= this.props.filterRank[1]
+        })
+        .filter((data) => {
+          if (!this.props.filterYear) return true
+          const yearNum = Number(data.year.substr(0, 4))
+          return this.props.filterYear[1] <= yearNum && yearNum <= this.props.filterYear[0]
+        })
+        .map((data) => {
           return <Dot
             key={data.rank + '' + data.year + data.title}
             data={data}

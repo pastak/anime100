@@ -9,12 +9,24 @@ export default class extends React.Component {
       showInfo: false,
       selected: null,
       rankingType: 'all',
-      pinnedInfo: {}
+      pinnedInfo: {},
+      enableRankFilter: false,
+      minRank: 400,
+      maxRank: 1,
+      enableYearFilter: false,
+      minYear: 1960,
+      maxYear: 2016
     }
 
     this.showInfo = this.showInfo.bind(this)
     this.showPinnedInfo = this.showPinnedInfo.bind(this)
     this.removePinnedInfo = this.removePinnedInfo.bind(this)
+    this.toggleRankFilter = this.toggleRankFilter.bind(this)
+    this.toggleYearFilter = this.toggleYearFilter.bind(this)
+    this.changeMaxRank = this.changeMaxRank.bind(this)
+    this.changeMinRank = this.changeMinRank.bind(this)
+    this.changeMaxYear = this.changeMaxYear.bind(this)
+    this.changeMinYear = this.changeMinYear.bind(this)
 
     this.lines = []
     let height = 12
@@ -59,12 +71,50 @@ export default class extends React.Component {
     this.setState({rankingType: type, pinnedInfo: {}})
   }
 
+  toggleRankFilter () {
+    this.setState({enableRankFilter: !this.state.enableRankFilter})
+  }
+
+  toggleYearFilter () {
+    this.setState({enableYearFilter: !this.state.enableYearFilter})
+  }
+
+  changeMaxRank (e) {
+    this.setState({maxRank: Number(e.target.value)})
+  }
+
+  changeMinRank (e) {
+    this.setState({minRank: Number(e.target.value)})
+  }
+
+  changeMaxYear (e) {
+    this.setState({maxYear: Number(e.target.value)})
+  }
+
+  changeMinYear (e) {
+    this.setState({minYear: Number(e.target.value)})
+  }
+
   render () {
     return <div>
       <button onClick={() => this.setRankingType('all')} className={`btn ${this.state.rankingType === 'all' ? 'btn-success' : 'btn-default'}`}>全順位(1位〜400位)</button>
       <button onClick={() => this.setRankingType('top')} className={`btn ${this.state.rankingType === 'top' ? 'btn-success' : 'btn-default'}`}>トップ100(1位〜100位)</button>
       <button onClick={() => this.setRankingType('male')} className={`btn ${this.state.rankingType === 'male' ? 'btn-success' : 'btn-default'}`}>男性トップ100</button>
       <button onClick={() => this.setRankingType('female')} className={`btn ${this.state.rankingType === 'female' ? 'btn-success' : 'btn-default'}`}>女性トップ100</button>
+      <br />
+      <label>
+        <input type='checkbox' onChange={this.toggleRankFilter} />
+        順位でフィルター
+      </label>
+      <input type='number' min='1' max='400' defaultValue='1' onChange={this.changeMaxRank}/>位〜
+      <input type='number' min='1' max='400' defaultValue='400' onChange={this.changeMinRank}/>位
+      <br />
+      <label>
+        <input type='checkbox' onChange={this.toggleYearFilter} />
+        制作年でフィルター
+      </label>
+      <input type='number' min='1960' max='2016' defaultValue='2016' onChange={this.changeMaxYear}/>年〜
+      <input type='number' min='1960' max='2016' defaultValue='1960' onChange={this.changeMinYear}/>年
       <br /><br />
       <svg id='svg' width='1080' height='850'>
         {this.lines}
@@ -72,6 +122,8 @@ export default class extends React.Component {
           showPinnedInfo={this.showPinnedInfo}
           removePinnedInfo={this.removePinnedInfo}
           showInfo={this.showInfo}
+          filterRank={this.state.enableRankFilter && [this.state.maxRank, this.state.minRank]}
+          filterYear={this.state.enableYearFilter && [this.state.maxYear, this.state.minYear]}
           type={this.state.rankingType} />
       </svg>
       <div className='infoBoxArea'>

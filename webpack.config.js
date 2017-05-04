@@ -1,8 +1,11 @@
+const webpack = require('webpack')
 const path = require('path')
 
 const isProductionBuild = process.env.NODE_ENV === 'production'
 
-module.exports = {
+const plugins = [new webpack.optimize.UglifyJsPlugin()]
+
+module.exports = Object.assign({
   devtool: isProductionBuild ? false : 'inline-source-map',
   entry: {
     main: ['babel-register', './src/main.js']
@@ -20,4 +23,4 @@ module.exports = {
       }
     ]
   }
-}
+}, isProductionBuild ? {plugins: plugins} : {})
