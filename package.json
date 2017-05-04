@@ -1,0 +1,23 @@
+{
+  "name": "anime100plot",
+  "version": "1.0.0",
+  "author": "pastak <pasta0915@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "yarn run build",
+    "start": "node server.js",
+    "build": "node_modules/.bin/webpack"
+  },
+  "devDependencies": {
+    "babel-loader": "^7.0.0",
+    "babel-preset-env": "^1.4.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.24.1",
+    "react": "^15.5.4",
+    "react-dom": "^15.5.4",
+    "webpack": "^2.4.1"
+  },
+  "dependencies": {
+    "express": "^4.15.2"
+  }
+}
