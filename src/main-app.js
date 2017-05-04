@@ -8,9 +8,14 @@ export default class extends React.Component {
     this.state = {
       showInfo: false,
       selected: null,
-      rankingType: 'all'
+      rankingType: 'all',
+      pinnedInfo: {}
     }
+
     this.showInfo = this.showInfo.bind(this)
+    this.showPinnedInfo = this.showPinnedInfo.bind(this)
+    this.removePinnedInfo = this.removePinnedInfo.bind(this)
+
     this.lines = []
     let height = 12
     for (let year = 2016; year >= 1960; year -= 3, height += 36) {
@@ -25,43 +30,81 @@ export default class extends React.Component {
     }
   }
 
-  showInfo (data, yearNum, rankNum) {
+  showInfo (data) {
     this.setState({
       showInfo: true,
       selected: data
     })
   }
 
+  showPinnedInfo (data) {
+    if (this.state.pinnedInfo[data.rank]) return
+    const tmp = Object.assign({}, this.state.pinnedInfo)
+    tmp[data.rank] = data
+    this.setState({pinnedInfo: tmp})
+  }
+
+  removePinnedInfo (data) {
+    if (this.state.pinnedInfo[data.rank]) {
+      const tmp = Object.assign({}, this.state.pinnedInfo)
+      delete tmp[data.rank]
+      this.setState({pinnedInfo: tmp})
+    }
+  }
+
   setRankingType (type) {
-    this.setState({rankingType: type})
+    this.setState({rankingType: type, pinnedInfo: {}})
   }
 
   render () {
     return <div>
-    <button onClick={() => this.setRankingType('all')} className={`btn ${this.state.rankingType === 'all' ? 'btn-success' : 'btn-default'}`}>全順位(1位〜400位)</button>
-    <button onClick={() => this.setRankingType('top')} className={`btn ${this.state.rankingType === 'top' ? 'btn-success' : 'btn-default'}`}>トップ100(1位〜100位)</button>
-    <button onClick={() => this.setRankingType('male')} className={`btn ${this.state.rankingType === 'male' ? 'btn-success' : 'btn-default'}`}>男性トップ100</button>
-    <button onClick={() => this.setRankingType('female')} className={`btn ${this.state.rankingType === 'female' ? 'btn-success' : 'btn-default'}`}>女性トップ100</button>
-    <br /><br />
-    <svg id='svg' width='1200' height='850'>
-      {this.lines}
-      <DataDots showInfo={this.showInfo} type={this.state.rankingType} />
-    </svg>
-    {
-      this.state.showInfo &&
-      <div className='infoBox'>
-        順位 {this.state.selected.rank} <br />
-        <a href={`https://www.google.co.jp/search?q=${encodeURIComponent(this.state.selected.title)}&btnI=1`} target='_blank'>
-          {this.state.selected.title}
-        </a>
-        <br />
-        制作年 {this.state.selected.year}
-        <br />
-        <a href={`https://www.amazon.co.jp/s/field-keywords=${encodeURIComponent(this.state.selected.title)}&tag=anime100-22`} target='_blank'>
-          <i className="fa fa-amazon" aria-hidden="true"></i> Search on Amazon
-        </a>
+      <button onClick={() => this.setRankingType('all')} className={`btn ${this.state.rankingType === 'all' ? 'btn-success' : 'btn-default'}`}>全順位(1位〜400位)</button>
+      <button onClick={() => this.setRankingType('top')} className={`btn ${this.state.rankingType === 'top' ? 'btn-success' : 'btn-default'}`}>トップ100(1位〜100位)</button>
+      <button onClick={() => this.setRankingType('male')} className={`btn ${this.state.rankingType === 'male' ? 'btn-success' : 'btn-default'}`}>男性トップ100</button>
+      <button onClick={() => this.setRankingType('female')} className={`btn ${this.state.rankingType === 'female' ? 'btn-success' : 'btn-default'}`}>女性トップ100</button>
+      <br /><br />
+      <svg id='svg' width='1200' height='850'>
+        {this.lines}
+        <DataDots
+          showPinnedInfo={this.showPinnedInfo}
+          removePinnedInfo={this.removePinnedInfo}
+          showInfo={this.showInfo}
+          type={this.state.rankingType} />
+      </svg>
+      <div className='infoBoxArea'>
+        {
+          Object.keys(this.state.pinnedInfo).map((key) => {
+            const data = this.state.pinnedInfo[key]
+            return <div key={'infobox-' + data.rank} className='infoBox pinned'>
+              順位 {data.rank} <br />
+              <a href={`https://www.google.co.jp/search?q=${encodeURIComponent(data.title)}&btnI=1`} target='_blank'>
+                {data.title}
+              </a>
+              <br />
+              制作年 {data.year}
+              <br />
+              <a href={`https://www.amazon.co.jp/s/field-keywords=${encodeURIComponent(data.title)}&tag=anime100-22`} target='_blank'>
+                <i className="fa fa-amazon" aria-hidden="true"></i> Search on Amazon
+              </a>
+            </div>
+          })
+        }
+        {
+          this.state.showInfo &&
+          <div className='infoBox'>
+            順位 {this.state.selected.rank} <br />
+            <a href={`https://www.google.co.jp/search?q=${encodeURIComponent(this.state.selected.title)}&btnI=1`} target='_blank'>
+              {this.state.selected.title}
+            </a>
+            <br />
+            制作年 {this.state.selected.year}
+            <br />
+            <a href={`https://www.amazon.co.jp/s/field-keywords=${encodeURIComponent(this.state.selected.title)}&tag=anime100-22`} target='_blank'>
+              <i className="fa fa-amazon" aria-hidden="true"></i> Search on Amazon
+            </a>
+          </div>
+        }
       </div>
-    }
     </div>
   }
 }

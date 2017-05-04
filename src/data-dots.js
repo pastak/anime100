@@ -1,25 +1,5 @@
 import React from 'react'
-
-const COLORS = [
-  ['#ff0000', 1, 10],
-  ['#ee82ee', 11, 21],
-  ['#008000', 21, 50],
-  ['#ffa500', 51, 100],
-  ['#0000ff', 101, 200],
-  ['#9d4ec8', 201, 300],
-  ['#bbc94a', 301, 400]
-]
-
-const detectColor = (rank) => {
-  let color = ''
-  for (let colorInfo of COLORS) {
-    if (colorInfo[1] <= rank && rank <= colorInfo[2]) {
-      color = colorInfo[0]
-      break
-    }
-  }
-  return color
-}
+import Dot from './dot'
 
 export default class extends React.Component {
   constructor (props) {
@@ -82,17 +62,13 @@ export default class extends React.Component {
     return <g>
       {
         data.map((data) => {
-          const yearNum = Number(data.year.substr(0, 4))
-          const rankNum = Number(data.rank.substr(0, data.rank.length - 1))
-          return <circle
+          return <Dot
             key={data.rank + '' + data.year + data.title}
-            cy={(2017 - yearNum) * 12}
-            cx={rankNum * 2.5 + 65}
-            r='6'
-            stroke='black'
-            strokeWidth='1'
-            onMouseOver={() => this.props.showInfo(data, yearNum, rankNum)}
-            fill={detectColor(rankNum)}></circle>
+            data={data}
+            removePinnedInfo={this.props.removePinnedInfo}
+            showPinnedInfo={this.props.showPinnedInfo}
+            showInfo={this.props.showInfo}
+          />
         })
       }
     </g>

@@ -4,15 +4,22 @@
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <style>
-      .infoBox {
-        position: fixed;
-        bottom: 20px;
+      .infoBoxArea {
+        top: 10px;
         right: 30px;
+        position: fixed;
+      }
+      .infoBox {
+        border-radius: 6px;
         width: 300px;
         height: auto;
-        border: solid rgb(137, 226, 153) 2px;
+        border: solid rgb(137, 226, 153) 4px;
         background-color: white;
         padding: 3px;
+        margin: 2px;
+      }
+      .infoBox.pinned {
+        border: solid rgb(226, 137, 137) 4px;
       }
     </style>
   </head>
@@ -22,6 +29,18 @@
       <h3>これは何？</h3>
       <p>
         2017年5月3日にNHKBSプレミアムで放送された『<a href='http://www.nhk.or.jp/anime/anime100/' target='_blank'>NHKBSプレミアム ニッポンアニメ100</a>』のランキング順位を横軸、制作年を縦軸にプロットしたものです。
+        <br />
+        点をクリックすると右上の情報欄を固定できます。
+      </p>
+      <p>
+        <a
+          class='btn btn-primary'
+          href='https://twitter.com/intent/tweet?url=https://anime100.herokuapp.com/&text=%E3%80%8ENHKBS%E3%83%97%E3%83%AC%E3%83%9F%E3%82%A2%E3%83%A0%20%E3%83%8B%E3%83%83%E3%83%9D%E3%83%B3%E3%82%A2%E3%83%8B%E3%83%A1100%E3%80%8F%E3%81%AE%E3%83%A9%E3%83%B3%E3%82%AD%E3%83%B3%E3%82%B0%E9%A0%86%E4%BD%8D%E3%83%BB%E5%88%B6%E4%BD%9C%E5%B9%B4%E3%82%92%E3%83%97%E3%83%AD%E3%83%83%E3%83%88%E3%81%97%E3%81%9F%E3%82%84%E3%81%A4%20%23NHK%E3%82%A2%E3%83%8B%E3%83%A1100'
+          target='_blank'
+        >
+        <i class="fa fa-twitter" aria-hidden="true"></i>
+        Tweet
+        </a>
       </p>
       <p>
         created by <a href='https://twitter.com/pastak' target='_blank'>@pastak</a>
